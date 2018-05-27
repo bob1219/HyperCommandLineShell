@@ -17,7 +17,7 @@
 
 package hcls;
 
-class CurrentWorkingDirectory {
+public class CurrentWorkingDirectory {
 	private File cwd;
 
 	public CurrentWorkingDirectory() { cwd = new File("."); }

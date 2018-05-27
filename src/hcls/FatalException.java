@@ -17,7 +17,7 @@
 
 package hcls;
 
-class FatalException extends RuntimeException {
+public class FatalException extends RuntimeException {
 	FatalException() { super(); }
 	FatalException(String message) { super(message); }
 }
