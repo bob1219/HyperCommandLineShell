@@ -163,4 +163,32 @@ public class CommandProcessor {
 			throw new CommandLineException("access denied");
 		}
 	}
+
+	private static void command_rmdir(File dir, CurrentWorkingDirectory cwd) throws CommandLineException {
+		if(!RemoveDir(cwd.getAbsolutePath(dir))) {
+			throw new CommandLineException("failed remove a directory");
+		}
+	}:
+
+	// helper of command_rmdir method
+	private static boolean RemoveDir(File file) throws CommandLineException {
+		if(!file.exists()) {
+			return false;
+		}
+
+		try {
+			if(file.isDirectory()) {
+				for(File FileInTheDir: file.listFiles()) {
+					if(!RemoveDir(FileInTheDir)) {
+						return false;
+					}
+				}
+				return file.delete();
+			} else {
+				return file.delete();
+			}
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
+		}
+	}
 }
