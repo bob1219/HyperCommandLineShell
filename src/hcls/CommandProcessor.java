@@ -153,4 +153,14 @@ public class CommandProcessor {
 			throw new CommandLineException("invalid filename");
 		}
 	}
+
+	private static void command_mkdir(File dir, CurrentWorkingDirectory cwd) throws CommandLineException {
+		try {
+			if(!cwd.getAbsolutePath(dir).mkdir()) {
+				throw new CommandLineException("failed make a directory");
+			}
+		} catch(SecutiryException e) {
+			throw new CommandLineException("access denied");
+		}
+	}
 }
