@@ -248,4 +248,17 @@ public class CommandProcessor {
 			throw new CommandLineException("access denied");
 		}
 	}
+
+	private static void command_tview(File file) throws CommandLineException {
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+			String line;
+			for(int i = 1; (line = reader.readLine()) != null; ++i) {
+				System.out.println(i + ":\t" + line);
+			}
+		} catch(FileNotFoundException e) {
+			throw new CommandLineException("file not found");
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
+		}
+	}
 }
