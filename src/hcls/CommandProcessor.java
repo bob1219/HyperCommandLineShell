@@ -191,4 +191,49 @@ public class CommandProcessor {
 			throw new CommandLineException("access denied");
 		}
 	}
+
+	private static void command_cpdir(File source, File dest, CurrentWorkingDirectory cwd) throws CommandLineException {
+		if(!CopyDir(cwd.getAbsolutePath(source), cwd.getAbsolutePath(dest))) {
+			throw new CommandLineException("failed copy a directory");
+		}
+	}
+
+	// helper of command_cpdir method
+	private static boolean CopyDir(File source, File dest) throws CommandLineException {
+		try {
+			if(!source.exists()) {
+				return false;
+			}
+
+			if(!dest.exists()) {
+				if(!dest.mkdir()) {
+					return false;
+				}
+			}
+
+			if(source.isFile()) {
+				throw new CommandLineException("source is a file");
+			}
+
+			if(dest.isFile()) {
+				throw new CommandLineException("destination is a file");
+			}
+
+			for(File FileInTheDir: source.listFiles()) {
+				if(FileInTheDir.isFile()) {
+					try {
+						Files.copy(FileInTheDir.toPath(), new File(dest.toString() + '/' + FileInTheDir.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.NOFOLLOW_LINKS);
+					} catch(IOException e) {
+						throw new CommandLineException("I/O error");
+					} catch(DirectoryNotEmptyException e) {}
+				} else {
+					return CopyDir(FileInTheDir, new File(dest.toString() + '/' + FileInTheDir.getName()));
+				}
+			}
+
+			return true;
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
+		}
+	}
 }
