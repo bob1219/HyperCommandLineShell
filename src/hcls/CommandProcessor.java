@@ -115,4 +115,16 @@ public class CommandProcessor {
 			throw new CommandLineException("invalid path setting number");
 		}
 	}
+
+	private static void command_mkfile(File file, CurrentWorkingDirectory cwd) throws CommandLineException {
+		try {
+			if(!cwd.getAbsolutePath(file).createNewFile()) {
+				throw new CommandLineException("failed make a file");
+			}
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
+		}
+	}
 }
