@@ -16,6 +16,7 @@
 // along with HyperCommandLineShell. If not, see <http://www.gnu.org/licenses/>.
 
 import java.io.*;
+import java.nio.file.*;
 package hcls;
 
 public class CommandProcessor {
@@ -136,6 +137,20 @@ public class CommandProcessor {
 			}
 		} catch(SecutiryException e) {
 			throw new CommandLineException("access denied");
+		}
+	}
+
+	private static void command_cpfile(File source, File dest, CurrentWorkingDirectory cwd) throws CommandLineException {
+		try {
+			Files.copy(cwd.getAbsolutePath(source).toPath(), cwd.getAbsolutePath(dest).toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.NOFOLLOW_LINKS);
+		} catch(DirectoryNotEmptyException e) {
+			throw new CommandLineException("it is a directory");
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
+		} catch(InvalidPathException e) {
+			throw new CommandLineException("invalid filename");
 		}
 	}
 }
