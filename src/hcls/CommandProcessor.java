@@ -22,39 +22,39 @@ public class CommandProcessor {
 		try {
 			switch(cmdarray[0]) {
 			case "mkfile":
-				command_mkfile(new File(cmdarray[1]));
+				command_mkfile(new File(cmdarray[1]), cwd);
 				break;
 
 			case "rmfile":
-				command_rmfile(new File(cmdarray[1]));
+				command_rmfile(new File(cmdarray[1]), cwd);
 				break;
 
 			case "cpfile":
-				command_cpfile(new File(cmdarray[1]), new File(cmdarray[2]));
+				command_cpfile(new File(cmdarray[1]), new File(cmdarray[2]), cwd);
 				break;
 
 			case "mkdir":
-				command_mkdir(new File(cmdarray[1]));
+				command_mkdir(new File(cmdarray[1]), cwd);
 				break;
 
 			case "rmdir":
-				command_rmdir(new File(cmdarray[1]));
+				command_rmdir(new File(cmdarray[1]), cwd);
 				break;
 
 			case "cpdir":
-				command_cpdir(new File(cmdarray[1]), new File(cmdarray[2]));
+				command_cpdir(new File(cmdarray[1]), new File(cmdarray[2]), cwd);
 				break;
 
 			case "rename":
-				command_rename(new File(cmdarray[1]), new File(cmdarray[2]));
+				command_rename(new File(cmdarray[1]), new File(cmdarray[2]), cwd);
 				break;
 
 			case "tview":
-				command_tview(new File(cmdarray[1]));
+				command_tview(new File(cmdarray[1]), cwd);
 				break;
 
 			case "bview":
-				command_bview(new File(cmdarray[1]));
+				command_bview(new File(cmdarray[1]), cwd);
 				break;
 
 			case "chcwd":
