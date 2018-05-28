@@ -33,8 +33,7 @@ class Main {
 		System.out.println("Copyright 2018 Daiki Yoshida");
 		System.out.println();
 		System.out.println("This program comes with ABSOLUTELY NO WARRANTY.");
-		System.out.println("This is free software, and you are welcome to redistribute it");
-		System.out.println("under certain conditions.");
+		System.out.println("This is free software, and you are welcome to redistribute it under certain conditions.");
 		System.out.println();
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
