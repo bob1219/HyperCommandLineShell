@@ -236,4 +236,14 @@ public class CommandProcessor {
 			throw new CommandLineException("access denied");
 		}
 	}
+
+	private static void command_rename(File source, File dest, CurrentWorkingDirectory cwd) throws CommandLineException {
+		try {
+			if(!cwd.getAbsolutePath(source).renameTo(cwd.getAbsolutePath(dest))) {
+				throw new CommandLineException("failed rename a file");
+			}
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
+		}
+	}
 }
