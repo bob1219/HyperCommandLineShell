@@ -127,4 +127,14 @@ public class CommandProcessor {
 			throw new CommandLineException("access denied");
 		}
 	}
+
+	private static void command_rmfile(File file, CurrentWorkingDirectory cwd) throws CommandLineException {
+		try {
+			if(!cwd.getAbsolutePath(file).delete()) {
+				throw new CommandLineException("failed remove a file");
+			}
+		} catch(SecutiryException e) {
+			throw new CommandLineException("access denied");
+		}
+	}
 }
