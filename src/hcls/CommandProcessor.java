@@ -24,43 +24,43 @@ public class CommandProcessor {
 		try {
 			switch(cmdarray[0]) {
 			case "mkfile":
-				command_mkfile(new File(cmdarray[1]), cwd);
+				command_mkfile(cwd.getAbsolutePath(new File(cmdarray[1])));
 				break;
 
 			case "rmfile":
-				command_rmfile(new File(cmdarray[1]), cwd);
+				command_rmfile(cwd.getAbsolutePath(new File(cmdarray[1])));
 				break;
 
 			case "cpfile":
-				command_cpfile(new File(cmdarray[1]), new File(cmdarray[2]), cwd);
+				command_cpfile(cwd.getAbsolutePath(new File(cmdarray[1])), cwd.getAbsolutePath(new File(cmdarray[2])));
 				break;
 
 			case "mkdir":
-				command_mkdir(new File(cmdarray[1]), cwd);
+				command_mkdir(cwd.getAbsolutePath(new File(cmdarray[1])));
 				break;
 
 			case "rmdir":
-				command_rmdir(new File(cmdarray[1]), cwd);
+				command_rmdir(cwd.getAbsolutePath(new File(cmdarray[1])));
 				break;
 
 			case "cpdir":
-				command_cpdir(new File(cmdarray[1]), new File(cmdarray[2]), cwd);
+				command_cpdir(cwd.getAbsolutePath(new File(cmdarray[1])), cwd.getAbsolutePath(new File(cmdarray[2])));
 				break;
 
 			case "rename":
-				command_rename(new File(cmdarray[1]), new File(cmdarray[2]), cwd);
+				command_rename(cwd.getAbsolutePath(new File(cmdarray[1])), cwd.getAbsolutePath(new File(cmdarray[2])));
 				break;
 
 			case "tview":
-				command_tview(new File(cmdarray[1]), cwd);
+				command_tview(cwd.getAbsolutePath(new File(cmdarray[1])));
 				break;
 
 			case "bview":
-				command_bview(new File(cmdarray[1]), cwd);
+				command_bview(cwd.getAbsolutePath(new File(cmdarray[1])));
 				break;
 
 			case "chcwd":
-				command_chcwd(cwd, new File(cmdarray[1]));
+				command_chcwd(cwd, cwd.getAbsolutePath(new File(cmdarray[1])));
 				break;
 
 			case "pcwd":
@@ -77,6 +77,8 @@ public class CommandProcessor {
 				for(int i = 0; i < appCmdArray.length; ++i) {
 					appCmdArray[i] = cmdarray[i + 1];
 				}
+
+				appCmdArray = cwd.getAbsolutePath(new File(appCmdArray[0])).toString();
 
 				command_app(cwd, appCmdArray);
 				break;
@@ -118,9 +120,9 @@ public class CommandProcessor {
 		}
 	}
 
-	private static void command_mkfile(File file, CurrentWorkingDirectory cwd) throws CommandLineException {
+	private static void command_mkfile(File file) throws CommandLineException {
 		try {
-			if(!cwd.getAbsolutePath(file).createNewFile()) {
+			if(!file.createNewFile()) {
 				throw new CommandLineException("failed make a file");
 			}
 		} catch(IOException e) {
@@ -130,9 +132,9 @@ public class CommandProcessor {
 		}
 	}
 
-	private static void command_rmfile(File file, CurrentWorkingDirectory cwd) throws CommandLineException {
+	private static void command_rmfile(File file) throws CommandLineException {
 		try {
-			if(!cwd.getAbsolutePath(file).delete()) {
+			if(!file.delete()) {
 				throw new CommandLineException("failed remove a file");
 			}
 		} catch(SecutiryException e) {
@@ -140,9 +142,9 @@ public class CommandProcessor {
 		}
 	}
 
-	private static void command_cpfile(File source, File dest, CurrentWorkingDirectory cwd) throws CommandLineException {
+	private static void command_cpfile(File source, File dest) throws CommandLineException {
 		try {
-			Files.copy(cwd.getAbsolutePath(source).toPath(), cwd.getAbsolutePath(dest).toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.NOFOLLOW_LINKS);
+			Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.NOFOLLOW_LINKS);
 		} catch(DirectoryNotEmptyException e) {
 			throw new CommandLineException("it is a directory");
 		} catch(IOException e) {
@@ -154,9 +156,9 @@ public class CommandProcessor {
 		}
 	}
 
-	private static void command_mkdir(File dir, CurrentWorkingDirectory cwd) throws CommandLineException {
+	private static void command_mkdir(File dir) throws CommandLineException {
 		try {
-			if(!cwd.getAbsolutePath(dir).mkdir()) {
+			if(!dir.mkdir()) {
 				throw new CommandLineException("failed make a directory");
 			}
 		} catch(SecutiryException e) {
@@ -164,8 +166,8 @@ public class CommandProcessor {
 		}
 	}
 
-	private static void command_rmdir(File dir, CurrentWorkingDirectory cwd) throws CommandLineException {
-		if(!RemoveDir(cwd.getAbsolutePath(dir))) {
+	private static void command_rmdir(File dir) throws CommandLineException {
+		if(!RemoveDir(dir)) {
 			throw new CommandLineException("failed remove a directory");
 		}
 	}:
@@ -192,8 +194,8 @@ public class CommandProcessor {
 		}
 	}
 
-	private static void command_cpdir(File source, File dest, CurrentWorkingDirectory cwd) throws CommandLineException {
-		if(!CopyDir(cwd.getAbsolutePath(source), cwd.getAbsolutePath(dest))) {
+	private static void command_cpdir(File source, File dest) throws CommandLineException {
+		if(!CopyDir(source, dest)) {
 			throw new CommandLineException("failed copy a directory");
 		}
 	}
@@ -237,9 +239,9 @@ public class CommandProcessor {
 		}
 	}
 
-	private static void command_rename(File source, File dest, CurrentWorkingDirectory cwd) throws CommandLineException {
+	private static void command_rename(File source, File dest) throws CommandLineException {
 		try {
-			if(!cwd.getAbsolutePath(source).renameTo(cwd.getAbsolutePath(dest))) {
+			if(!source.renameTo(dest)) {
 				throw new CommandLineException("failed rename a file");
 			}
 		} catch(SecurityException e) {
