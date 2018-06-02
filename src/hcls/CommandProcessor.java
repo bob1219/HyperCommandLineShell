@@ -78,8 +78,6 @@ public class CommandProcessor {
 					appCmdArray[i] = cmdarray[i + 1];
 				}
 
-				appCmdArray = cwd.getAbsolutePath(new File(appCmdArray[0])).toString();
-
 				command_app(cwd, appCmdArray);
 				break;
 
