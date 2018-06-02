@@ -261,4 +261,49 @@ public class CommandProcessor {
 			throw new CommandLineException("I/O error");
 		}
 	}
+
+	private static void command_bview(File file) throws CommandLineException {
+		final int fileSizeMax = 51200;
+		try(BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file))) {
+			byte[] bytes = new byte[fileSizeMax];
+			int bytesNumber = stream.read(bytes);
+			if(bytesNumber == -1) {
+				return;
+			}
+
+			System.out.println("\t+0 +1 +2 +3 +4 +5 +6 +7 +8 +9 +A +B +C +D +E +F 0123456789ABCDEF");
+
+			for(int i = 0; i < bytesNumber; i += 0x10) {
+				System.out.print(i + ":\t");
+
+				int j;
+				for(j = 0; j < 0xf && i + j < bytesNumber; ++j) {
+					int n = bytes[i + j];
+					String s = (n < 10 ? "0" : "") + Integer.toHexString(n).toUpperCase();
+					System.out.print(s + ' ');
+				}
+
+				if(j < 0xf) {
+					for(int k = 1; k <= 0xf - j; ++k) {
+						for(int l = 1; l <= 3; ++l) {
+							System.out.print(' ');
+						}
+					}
+				}
+
+				for(int k = 0; k < 0xf; ++k) {
+					int c = bytes[i + k];
+					System.out.print(Character.isISOControl(c) ? '.' : (char)c);
+				}
+
+				System.out.println();
+			}
+		} catch(FileNotFoundException e) {
+			throw new CommandLineException("file not found");
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
+		}
+	}
 }
