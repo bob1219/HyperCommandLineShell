@@ -104,6 +104,10 @@ public class CommandProcessor {
 				}
 				break;
 
+			case "now":
+				command_now();
+				break;
+
 			case "exit":
 				System.exit(0);
 				break;
