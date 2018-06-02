@@ -310,4 +310,8 @@ public class CommandProcessor {
 	private static void command_chcwd(CurrentWorkingDirectory cwd, File dir) {
 		cwd.set(dir);
 	}
+
+	private static void command_pcwd(CurrentWorkingDirectory cwd) {
+		System.out.println(cwd.toString());
+	}
 }
