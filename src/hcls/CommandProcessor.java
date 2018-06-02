@@ -306,4 +306,8 @@ public class CommandProcessor {
 			throw new CommandLineException("I/O error");
 		}
 	}
+
+	private static void command_chcwd(CurrentWorkingDirectory cwd, File dir) {
+		cwd.set(dir);
+	}
 }
