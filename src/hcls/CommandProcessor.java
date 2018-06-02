@@ -151,7 +151,7 @@ public class CommandProcessor {
 			throw new CommandLineException("access denied");
 		} catch(InvalidPathException e) {
 			throw new CommandLineException("invalid filename");
-		}
+		} catch(FileAlreadyExistsException e) {}
 	}
 
 	private static void command_mkdir(File dir) throws CommandLineException {
@@ -172,11 +172,11 @@ public class CommandProcessor {
 
 	// helper of command_rmdir method
 	private static boolean RemoveDir(File file) throws CommandLineException {
-		if(!file.exists()) {
-			return false;
-		}
-
 		try {
+			if(!file.exists()) {
+				return false;
+			}
+
 			if(file.isDirectory()) {
 				for(File FileInTheDir: file.listFiles()) {
 					if(!RemoveDir(FileInTheDir)) {
@@ -202,39 +202,37 @@ public class CommandProcessor {
 	private static boolean CopyDir(File source, File dest) throws CommandLineException {
 		try {
 			if(!source.exists()) {
+				throw new CommandLineException("source do not exists");
+			}
+
+			if(!source.isDirectory()) {
+				throw new CommandLineException("source is not directory");
+			}
+
+			if(dest.exists()) {
+				RemoveDir(dest);
+			}
+
+			if(!dest.mkdir()) {
 				return false;
 			}
 
-			if(!dest.exists()) {
-				if(!dest.mkdir()) {
-					return false;
-				}
-			}
-
-			if(source.isFile()) {
-				throw new CommandLineException("source is a file");
-			}
-
-			if(dest.isFile()) {
-				throw new CommandLineException("destination is a file");
-			}
-
-			for(File FileInTheDir: source.listFiles()) {
-				if(FileInTheDir.isFile()) {
-					try {
-						Files.copy(FileInTheDir.toPath(), new File(dest.toString() + '/' + FileInTheDir.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.NOFOLLOW_LINKS);
-					} catch(IOException e) {
-						throw new CommandLineException("I/O error");
-					} catch(DirectoryNotEmptyException e) {}
+			for(File file: source.listFiles()) {
+				if(file.isFile()) {
+					Files.copy(file.toPath(), new File(dest.toString() + '/' + file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.NOFOLLOW_LINKS);
 				} else {
-					return CopyDir(FileInTheDir, new File(dest.toString() + '/' + FileInTheDir.getName()));
+					return CopyDir(file, new File(dest.toString() + '/' + file.getName()));
 				}
 			}
 
 			return true;
 		} catch(SecurityException e) {
 			throw new CommandLineException("access denied");
-		}
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
+		} catch(FileAlreadyExistsException e) {
+			// Nothing
+		} catch(DirectoryNotEmptyException e) {}
 	}
 
 	private static void command_rename(File source, File dest) throws CommandLineException {
