@@ -68,7 +68,7 @@ private class PathProcessor {
 			while((line = reader.readLine()) != null) {
 				paths.add(new File(line));
 			}
-		} catch(FileNotFoundException e) {}
+		}
 	}
 
 	private static void write() throws IOException {
