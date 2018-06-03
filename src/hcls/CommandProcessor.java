@@ -314,4 +314,22 @@ public class CommandProcessor {
 	private static void command_pcwd(CurrentWorkingDirectory cwd) {
 		System.out.println(cwd.toString());
 	}
+
+	private static void command_app(CurrentWorkingDirectory cwd, String[] cmdarray) throws CommandLineException {
+		try {
+			cmdarray[0] = PathProcessor.pathProcess(cwd);
+			ProcessBuilder pb = new ProcessBuilder(cmdarray);
+			pb.directory(cwd.get());
+
+			BufferedReader reader = new BufferedReader(pb.start().getInputStream());
+			String line;
+			while((line = reader.readLine()) != null) {
+				System.out.println(line);
+			}
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
+		}
+	}
 }
