@@ -317,7 +317,7 @@ public class CommandProcessor {
 
 	private static void command_app(CurrentWorkingDirectory cwd, String[] cmdarray) throws CommandLineException {
 		try {
-			cmdarray[0] = PathProcessor.pathProcess(cwd);
+			cmdarray[0] = PathProcessor.pathProcess(new File(cmdarray[0]), cwd);
 			ProcessBuilder pb = new ProcessBuilder(cmdarray);
 			pb.directory(cwd.get());
 
