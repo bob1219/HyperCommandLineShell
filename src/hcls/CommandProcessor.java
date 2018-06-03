@@ -203,7 +203,7 @@ public class CommandProcessor {
 	}
 
 	// helper of command_cpdir method
-	private static boolean CopyDir(File source, File dest) throws CommandLineException {
+	private static boolean copyDir(File source, File dest) throws CommandLineException {
 		try {
 			if(!source.exists()) {
 				throw new CommandLineException("source do not exists");
