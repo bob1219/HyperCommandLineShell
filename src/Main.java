@@ -21,7 +21,7 @@ import hcls.*;
 class Main {
 	public static void main(String[] args) {
 		try {
-			CommandLine();
+			commandLine();
 		} catch(FatalException e) {
 			System.err.println("Error: " + e.getMessage());
 			System.exit(1);
@@ -36,7 +36,7 @@ class Main {
 		}
 	}
 
-	private static void CommandLine() {
+	private static void commandLine() {
 		System.out.println("HyperCommandLineShell");
 		System.out.println("Copyright 2018 Daiki Yoshida");
 		System.out.println();
@@ -62,7 +62,7 @@ class Main {
 			}
 
 			try {
-				CommandProcessor.CommandProcess(CommandProcessor.SplitCommandLine(command), cwd);
+				CommandProcessor.commandProcess(CommandProcessor.splitCommandLine(command), cwd);
 			} catch(CommandLineException e) {
 				System.err.println("Error: " + e.getMessage());
 			}
