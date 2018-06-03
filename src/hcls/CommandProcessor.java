@@ -318,6 +318,10 @@ public class CommandProcessor {
 	private static void command_app(CurrentWorkingDirectory cwd, String[] cmdarray) throws CommandLineException {
 		try {
 			cmdarray[0] = PathProcessor.pathProcess(new File(cmdarray[0]), cwd).toString();
+			if(cmdarray[0] == null) {
+				throw new CommandLineException("software not found");
+			}
+
 			ProcessBuilder pb = new ProcessBuilder(cmdarray);
 			pb.directory(cwd.get());
 
@@ -333,20 +337,38 @@ public class CommandProcessor {
 		}
 	}
 
-	private static void command_path_add(File dir) {
-		PathProcessor.add(dir);
+	private static void command_path_add(File dir) throws CommandLineException {
+		try {
+			PathProcessor.add(dir);
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
+		} catch(FileNotFoundException e) {}
 	}
 
 	private static void command_path_del(int n) {
-		PathProcessor.del(n);
+		try {
+			PathProcessor.del(n);
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
+		} catch(IndexOutOfBoundsException e) {
+			throw new CommandLineException("invalid setting number");
+		} catch(FileNotFoundException e) {}
 	}
 
 	private static void command_path_clear() {
-		PathProcessor.clear();
+		try {
+			PathProcessor.clear();
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
+		} catch(FileNotFoundException e) {}
 	}
 
 	private static void command_path_list() {
-		PathProcessor.list();
+		int i = 1;
+		for(File path: PathProcessor.getPaths()) {
+			System.out.println(i + ":\t" + path.toString());
+			++i;
+		}
 	}
 
 	private static void command_now() {
