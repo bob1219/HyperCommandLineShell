@@ -20,7 +20,7 @@ import java.nio.file.*;
 package hcls;
 
 public class CommandProcessor {
-	public static void CommandProcess(String[] cmdarray, CurrentWorkingDirectory cwd) throws CommandLineException {
+	public static void commandProcess(String[] cmdarray, CurrentWorkingDirectory cwd) throws CommandLineException {
 		try {
 			switch(cmdarray[0]) {
 			case "mkfile":
