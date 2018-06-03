@@ -332,4 +332,20 @@ public class CommandProcessor {
 			throw new CommandLineException("I/O error");
 		}
 	}
+
+	private static void command_path_add(File dir) {
+		PathProcessor.add(dir);
+	}
+
+	private static void command_path_del(int n) {
+		PathProcessor.del(n);
+	}
+
+	private static void command_path_clear() {
+		PathProcessor.clear();
+	}
+
+	private static void command_path_list() {
+		PathProcessor.list();
+	}
 }
