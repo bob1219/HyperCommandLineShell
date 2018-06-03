@@ -169,21 +169,21 @@ public class CommandProcessor {
 	}
 
 	private static void command_rmdir(File dir) throws CommandLineException {
-		if(!RemoveDir(dir)) {
+		if(!removeDir(dir)) {
 			throw new CommandLineException("failed remove a directory");
 		}
 	}:
 
 	// helper of command_rmdir method
-	private static boolean RemoveDir(File file) throws CommandLineException {
+	private static boolean removeDir(File file) throws CommandLineException {
 		try {
 			if(!file.exists()) {
 				return false;
 			}
 
 			if(file.isDirectory()) {
-				for(File FileInTheDir: file.listFiles()) {
-					if(!RemoveDir(FileInTheDir)) {
+				for(File fileInTheDir: file.listFiles()) {
+					if(!removeDir(fileInTheDir)) {
 						return false;
 					}
 				}
