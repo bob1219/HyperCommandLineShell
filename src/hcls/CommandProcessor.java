@@ -197,7 +197,7 @@ public class CommandProcessor {
 	}
 
 	private static void command_cpdir(File source, File dest) throws CommandLineException {
-		if(!CopyDir(source, dest)) {
+		if(!copyDir(source, dest)) {
 			throw new CommandLineException("failed copy a directory");
 		}
 	}
@@ -214,18 +214,18 @@ public class CommandProcessor {
 			}
 
 			if(dest.exists()) {
-				RemoveDir(dest);
+				removeDir(dest);
 			}
 
 			if(!dest.mkdir()) {
 				return false;
 			}
 
-			for(File file: source.listFiles()) {
-				if(file.isFile()) {
-					Files.copy(file.toPath(), new File(dest.toString() + '/' + file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.NOFOLLOW_LINKS);
+			for(File fileInSourceDir: source.listFiles()) {
+				if(fileInSourceDir.isFile()) {
+					Files.copy(fileInSourceDir.toPath(), new File(dest.toString() + '/' + fileInSourceDir.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.NOFOLLOW_LINKS);
 				} else {
-					return CopyDir(file, new File(dest.toString() + '/' + file.getName()));
+					return copyDir(file, new File(dest.toString() + '/' + fileInSourceDir.getName()));
 				}
 			}
 
