@@ -348,4 +348,8 @@ public class CommandProcessor {
 	private static void command_path_list() {
 		PathProcessor.list();
 	}
+
+	private static void command_now() {
+		System.out.println(new Date().toString());
+	}
 }
