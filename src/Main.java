@@ -25,6 +25,14 @@ class Main {
 		} catch(FatalException e) {
 			System.err.println("Error: " + e.getMessage());
 			System.exit(1);
+		} catch(Exception e) {
+			System.err.println("A unexcepted exception occured.");
+			System.err.println("Stack trace:");
+			e.printStackTrace();
+			System.err.println();
+
+			System.err.println("If you are developer of HyperCommandLineShell, you should bugfix it.");
+			System.err.println("If else, USE OTHER VERY VERY GREAT COMMAND-LINE-SHELL!");
 		}
 	}
 
