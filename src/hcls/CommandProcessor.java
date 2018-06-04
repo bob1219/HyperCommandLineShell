@@ -367,8 +367,7 @@ public class CommandProcessor {
 	private static void command_path_list() {
 		int i = 1;
 		for(File path: PathProcessor.getPaths()) {
-			System.out.println(i + ":\t" + path.toString());
-			++i;
+			System.out.println((i++) + ":\t" + path.toString());
 		}
 	}
 
