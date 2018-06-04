@@ -313,15 +313,16 @@ public class CommandProcessor {
 		System.out.println(cwd.toString());
 	}
 
-	private static void command_app(CurrentWorkingDirectory cwd, String[] cmdarray) throws CommandLineException {
+	private static void command_exec(CurrentWorkingDirectory cwd, String[] cmdarray) throws CommandLineException {
 		try {
 			cmdarray[0] = PathProcessor.pathProcess(new File(cmdarray[0]), cwd).toString();
 			if(cmdarray[0] == null) {
-				throw new CommandLineException("software not found");
+				throw new CommandLineException("it do not exists");
 			}
 
 			ProcessBuilder pb = new ProcessBuilder(cmdarray);
 			pb.directory(cwd.get());
+			pb.redirectErrorStream(true);
 
 			BufferedReader reader = new BufferedReader(pb.start().getInputStream());
 			String line;
