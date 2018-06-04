@@ -374,4 +374,8 @@ public class CommandProcessor {
 	private static void command_now() {
 		System.out.println(new Date().toString());
 	}
+
+	private static String[] splitCommandLine(String command) {
+		return command.split(" ");
+	}
 }
