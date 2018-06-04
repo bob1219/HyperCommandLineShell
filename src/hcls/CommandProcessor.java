@@ -67,18 +67,18 @@ public class CommandProcessor {
 				command_pcwd(cwd);
 				break;
 
-			case "app":
+			case "exec":
 				if(cmdarray.length == 1) {
 					throw new CommandLineException("few args");
 				}
 
-				// appCmdArray = {cmdarray[1], ..., cmdarray[cmdarray.length - 1]}
-				String[] appCmdArray = new String[cmdarray.length - 1];
-				for(int i = 0; i < appCmdArray.length; ++i) {
-					appCmdArray[i] = cmdarray[i + 1];
+				// softwareCmdArray = {cmdarray[1], ..., cmdarray[cmdarray.length - 1]}
+				String[] softwareCmdArray = new String[cmdarray.length - 1];
+				for(int i = 0; i < softwareCmdArray.length; ++i) {
+					softwareCmdArray[i] = cmdarray[i + 1];
 				}
 
-				command_app(cwd, appCmdArray);
+				command_exec(cwd, softwareCmdArray);
 				break;
 
 			case "path":
