@@ -263,7 +263,7 @@ public class CommandProcessor {
 	}
 
 	private static void command_bview(File file) throws CommandLineException {
-		final int fileSizeMax = 51200;
+		final int fileSizeMax = 1024 * 50; // 50kB
 		try(BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file))) {
 			byte[] bytes = new byte[fileSizeMax];
 			int bytesNumber = stream.read(bytes);
@@ -300,8 +300,6 @@ public class CommandProcessor {
 			}
 		} catch(FileNotFoundException e) {
 			throw new CommandLineException("file not found");
-		} catch(SecurityException e) {
-			throw new CommandLineException("access denied");
 		} catch(IOException e) {
 			throw new CommandLineException("I/O error");
 		}
