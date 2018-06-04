@@ -42,7 +42,10 @@ private class PathProcessor {
 	}
 
 	public static void add(File dir) throws IOException {
-		read();
+		try {
+			read();
+		} catch(FileNotFoundException e) {}
+
 		paths.add(dir);
 		write();
 	}
@@ -63,7 +66,7 @@ private class PathProcessor {
 
 	private static void read() throws IOException {
 		paths = new ArrayList<File>();
-		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("../datas/PATH")))) {
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("./../datas/PATH")))) {
 			String line;
 			while((line = reader.readLine()) != null) {
 				paths.add(new File(line));
@@ -72,7 +75,7 @@ private class PathProcessor {
 	}
 
 	private static void write() throws IOException {
-		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("../datas/PATH")))) {
+		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("./../datas/PATH")))) {
 			for(File path: paths) {
 				writer.write(path.toString());
 				writer.newLine();
