@@ -15,9 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with HyperCommandLineShell. If not, see <http://www.gnu.org/licenses/>.
 
+package hcls;
 import java.io.*;
 import java.nio.file.*;
-package hcls;
+import java.util.*;
 
 public class CommandProcessor {
 	public static void commandProcess(String[] cmdarray, CurrentWorkingDirectory cwd) throws CommandLineException {
@@ -139,14 +140,14 @@ public class CommandProcessor {
 			if(!file.delete()) {
 				throw new CommandLineException("failed remove a file");
 			}
-		} catch(SecutiryException e) {
+		} catch(SecurityException e) {
 			throw new CommandLineException("access denied");
 		}
 	}
 
 	private static void command_cpfile(File source, File dest) throws CommandLineException {
 		try {
-			Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.NOFOLLOW_LINKS);
+			Files.copy(source.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, LinkOption.NOFOLLOW_LINKS);
 		} catch(DirectoryNotEmptyException e) {
 			throw new CommandLineException("it is a directory");
 		} catch(IOException e) {
@@ -155,7 +156,7 @@ public class CommandProcessor {
 			throw new CommandLineException("access denied");
 		} catch(InvalidPathException e) {
 			throw new CommandLineException("invalid filename");
-		} catch(FileAlreadyExistsException e) {}
+		}
 	}
 
 	private static void command_mkdir(File dir) throws CommandLineException {
@@ -163,7 +164,7 @@ public class CommandProcessor {
 			if(!dir.mkdir()) {
 				throw new CommandLineException("failed make a directory");
 			}
-		} catch(SecutiryException e) {
+		} catch(SecurityException e) {
 			throw new CommandLineException("access denied");
 		}
 	}
@@ -172,7 +173,7 @@ public class CommandProcessor {
 		if(!removeDir(dir)) {
 			throw new CommandLineException("failed remove a directory");
 		}
-	}:
+	}
 
 	// helper of command_rmdir method
 	private static boolean removeDir(File file) throws CommandLineException {
@@ -223,20 +224,18 @@ public class CommandProcessor {
 
 			for(File fileInSourceDir: source.listFiles()) {
 				if(fileInSourceDir.isFile()) {
-					Files.copy(fileInSourceDir.toPath(), new File(dest.toString() + '/' + fileInSourceDir.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.NOFOLLOW_LINKS);
+					Files.copy(fileInSourceDir.toPath(), new File(dest.toString() + '/' + fileInSourceDir.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, LinkOption.NOFOLLOW_LINKS);
 				} else {
-					return copyDir(file, new File(dest.toString() + '/' + fileInSourceDir.getName()));
+					return copyDir(fileInSourceDir, new File(dest.toString() + '/' + fileInSourceDir.getName()));
 				}
 			}
-
-			return true;
 		} catch(SecurityException e) {
 			throw new CommandLineException("access denied");
 		} catch(IOException e) {
 			throw new CommandLineException("I/O error");
-		} catch(FileAlreadyExistsException e) {
-			// Nothing
-		} catch(DirectoryNotEmptyException e) {}
+		}
+
+		return true;
 	}
 
 	private static void command_rename(File source, File dest) throws CommandLineException {
@@ -324,7 +323,7 @@ public class CommandProcessor {
 			pb.directory(cwd.get());
 			pb.redirectErrorStream(true);
 
-			BufferedReader reader = new BufferedReader(pb.start().getInputStream());
+			BufferedReader reader = new BufferedReader(new InputStreamReader(pb.start().getInputStream()));
 			String line;
 			while((line = reader.readLine()) != null) {
 				System.out.println(line);
@@ -344,24 +343,26 @@ public class CommandProcessor {
 		}
 	}
 
-	private static void command_path_del(int n) {
+	private static void command_path_del(int n) throws CommandLineException {
 		try {
 			PathProcessor.del(n);
+		} catch(FileNotFoundException e) {
+			throw new CommandLineException("path settings not found");
 		} catch(IOException e) {
 			throw new CommandLineException("I/O error");
 		} catch(IndexOutOfBoundsException e) {
 			throw new CommandLineException("invalid setting number");
-		} catch(FileNotFoundException e) {
-			throw new CommandLineException("path settings not found");
 		}
 	}
 
-	private static void command_path_clear() {
+	private static void command_path_clear() throws CommandLineException {
 		try {
 			PathProcessor.clear();
+		} catch(FileNotFoundException e) {
+			// Nothing
 		} catch(IOException e) {
 			throw new CommandLineException("I/O error");
-		} catch(FileNotFoundException e) {}
+		}
 	}
 
 	private static void command_path_list() {
@@ -375,7 +376,7 @@ public class CommandProcessor {
 		System.out.println(new Date().toString());
 	}
 
-	private static String[] splitCommandLine(String command) {
+	public static String[] splitCommandLine(String command) {
 		return command.split(" ");
 	}
 }

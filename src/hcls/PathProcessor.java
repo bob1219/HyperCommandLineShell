@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with HyperCommandLineShell. If not, see <http://www.gnu.org/licenses/>.
 
-import java.util.*;
 package hcls;
+import java.util.*;
+import java.io.*;
 
-private class PathProcessor {
-	private List<File> paths;
+class PathProcessor {
+	private static List<File> paths;
 
 	public static File pathProcess(File file, CurrentWorkingDirectory cwd) throws IOException {
 		if(file.isAbsolute()) {
@@ -64,7 +65,7 @@ private class PathProcessor {
 
 	public static List<File> getPaths() { return paths; }
 
-	private static void read() throws IOException {
+	private static void read() throws FileNotFoundException, IOException {
 		paths = new ArrayList<File>();
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("./../datas/PATH")))) {
 			String line;

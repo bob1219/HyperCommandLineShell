@@ -16,6 +16,7 @@
 // along with HyperCommandLineShell. If not, see <http://www.gnu.org/licenses/>.
 
 package hcls;
+import java.io.*;
 
 public class CurrentWorkingDirectory {
 	private File cwd;
@@ -32,7 +33,7 @@ public class CurrentWorkingDirectory {
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj == this || (obj.getClass() == getClass() && (CurrentWorkingDirectory)obj.cwd.equals(cwd));
+		return obj == this || (obj.getClass() == getClass() && ((CurrentWorkingDirectory)obj).cwd.equals(cwd));
 	}
 
 	@Override
