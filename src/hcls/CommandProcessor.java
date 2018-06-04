@@ -341,7 +341,7 @@ public class CommandProcessor {
 			PathProcessor.add(dir);
 		} catch(IOException e) {
 			throw new CommandLineException("I/O error");
-		} catch(FileNotFoundException e) {}
+		}
 	}
 
 	private static void command_path_del(int n) {
@@ -351,7 +351,9 @@ public class CommandProcessor {
 			throw new CommandLineException("I/O error");
 		} catch(IndexOutOfBoundsException e) {
 			throw new CommandLineException("invalid setting number");
-		} catch(FileNotFoundException e) {}
+		} catch(FileNotFoundException e) {
+			throw new CommandLineException("path settings not found");
+		}
 	}
 
 	private static void command_path_clear() {
