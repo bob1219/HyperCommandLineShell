@@ -54,7 +54,7 @@ class Main {
 
 			String command;
 			try {
-				String command = reader.readLine();
+				command = reader.readLine();
 			} catch(IOException e) {
 				throw new FatalException("I/O error");
 			}
