@@ -273,17 +273,17 @@ public class CommandProcessor {
 			System.out.println("\t+0 +1 +2 +3 +4 +5 +6 +7 +8 +9 +A +B +C +D +E +F 0123456789ABCDEF");
 
 			for(int i = 0; i < bytesNumber; i += 0x10) {
-				System.out.print(i + ":\t");
+				System.out.print(Integer.toHexString(i).toUpperCase() + ":\t");
 
 				int j;
-				for(j = 0; j < 0xf && i + j < bytesNumber; ++j) {
+				for(j = 0; j <= 0xf && i + j < bytesNumber; ++j) {
 					int n = bytes[i + j];
-					String s = (n < 10 ? "0" : "") + Integer.toHexString(n).toUpperCase();
+					String s = (n < 0x10 ? "0" : "") + Integer.toHexString(n).toUpperCase();
 					System.out.print(s + ' ');
 				}
 
-				if(j < 0xf) {
-					for(int k = 1; k <= 0xf - j; ++k) {
+				if(j < 0x10) {
+					for(int k = 1; k <= 0x10 - j; ++k) {
 						for(int l = 1; l <= 3; ++l) {
 							System.out.print(' ');
 						}
