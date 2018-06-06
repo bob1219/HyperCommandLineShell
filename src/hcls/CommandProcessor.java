@@ -314,10 +314,12 @@ public class CommandProcessor {
 
 	private static void command_exec(CurrentWorkingDirectory cwd, String[] cmdarray) throws CommandLineException {
 		try {
-			cmdarray[0] = PathProcessor.pathProcess(new File(cmdarray[0]), cwd).toString();
-			if(cmdarray[0] == null) {
+			File file = PathProcessor.pathProcess(new File(cmdarray[0]), cwd);
+			if(file == null) {
 				throw new CommandLineException("it do not exists");
 			}
+
+			cmdarray[0] = file.toString();
 
 			ProcessBuilder pb = new ProcessBuilder(cmdarray);
 			pb.directory(cwd.get());
@@ -361,10 +363,16 @@ public class CommandProcessor {
 		}
 	}
 
-	private static void command_path_list() {
-		int i = 1;
-		for(File path: PathProcessor.getPaths()) {
-			System.out.println((i++) + ":\t" + path.toString());
+	private static void command_path_list() throws CommandLineException {
+		try {
+			int i = 1;
+			for(File path: PathProcessor.getPaths()) {
+				System.out.println((i++) + ":\t" + path.toString());
+			}
+		} catch(FileNotFoundException e) {
+			// Nothing
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
 		}
 	}
 
