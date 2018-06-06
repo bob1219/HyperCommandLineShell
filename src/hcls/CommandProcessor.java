@@ -226,16 +226,18 @@ public class CommandProcessor {
 				if(fileInSourceDir.isFile()) {
 					Files.copy(fileInSourceDir.toPath(), new File(dest.toString() + '/' + fileInSourceDir.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES, LinkOption.NOFOLLOW_LINKS);
 				} else {
-					return copyDir(fileInSourceDir, new File(dest.toString() + '/' + fileInSourceDir.getName()));
+					if(!copyDir(fileInSourceDir, new File(dest.toString() + '/' + fileInSourceDir.getName()))) {
+						return false;
+					}
 				}
 			}
+
+			return true;
 		} catch(SecurityException e) {
 			throw new CommandLineException("access denied");
 		} catch(IOException e) {
 			throw new CommandLineException("I/O error");
 		}
-
-		return true;
 	}
 
 	private static void command_rename(File source, File dest) throws CommandLineException {
