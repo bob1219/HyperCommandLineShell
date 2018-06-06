@@ -321,18 +321,14 @@ public class CommandProcessor {
 
 			ProcessBuilder pb = new ProcessBuilder(cmdarray);
 			pb.directory(cwd.get());
-			pb.redirectErrorStream(true);
+			pb.inheritIO();
 
-			BufferedReader reader = new BufferedReader(new InputStreamReader(pb.start().getInputStream()));
-			String line;
-			while((line = reader.readLine()) != null) {
-				System.out.println(line);
-			}
+			pb.start().waitFor();
 		} catch(SecurityException e) {
 			throw new CommandLineException("access denied");
 		} catch(IOException e) {
 			throw new CommandLineException("I/O error");
-		}
+		} catch(InterruptedException e) {}
 	}
 
 	private static void command_path_add(File dir) throws CommandLineException {
