@@ -264,37 +264,44 @@ public class CommandProcessor {
 	}
 
 	private static void command_bview(File file) throws CommandLineException {
-		final int fileSizeMax = 1024 * 50; // 50kB
 		try(BufferedInputStream stream = new BufferedInputStream(new FileInputStream(file))) {
-			byte[] bytes = new byte[fileSizeMax];
-			int bytesNumber = stream.read(bytes);
-			if(bytesNumber == -1) {
+			List<Integer> bytes = new ArrayList<Integer>();
+			int b;
+			while((b = stream.read()) != -1) {
+				bytes.add(b);
+			}
+
+			if(bytes.isEmpty()) {
 				return;
 			}
 
 			System.out.println("\t+0 +1 +2 +3 +4 +5 +6 +7 +8 +9 +A +B +C +D +E +F 0123456789ABCDEF");
 
-			for(int i = 0; i < bytesNumber; i += 0x10) {
-				System.out.print(Integer.toHexString(i).toUpperCase() + ":\t");
+			for(int i = 0; i < bytes.size(); i += 0x10) {
+				System.out.print(Integer.toHexString(i).toUpperCase());
+				System.out.print(":\t");
 
-				int j;
-				for(j = 0; j <= 0xf && i + j < bytesNumber; ++j) {
-					int n = bytes[i + j];
-					String s = (n < 0x10 ? "0" : "") + Integer.toHexString(n).toUpperCase();
-					System.out.print(s + ' ');
+				int j = 0;
+				for(; j <= 0xf && i + j < bytes.size(); ++j) {
+					int b2 = bytes.get(i + j);
+
+					if(Integer.compareUnsigned(b2, 0x10) < 0) {
+						System.out.print('0');
+					}
+
+					System.out.print(Integer.toHexString(b2).toUpperCase());
+					System.out.print(' ');
 				}
 
-				if(j < 0x10) {
-					for(int k = 1; k <= 0x10 - j; ++k) {
-						for(int l = 1; l <= 3; ++l) {
-							System.out.print(' ');
-						}
+				if(j < 0xf) {
+					for(int k = 1; 0x10 - j >= k; ++k) {
+						System.out.print("   "); // 3 spaces
 					}
 				}
 
-				for(int k = 0; k < 0xf; ++k) {
-					int c = bytes[i + k];
-					System.out.print(Character.isISOControl(c) ? '.' : (char)c);
+				for(int k = 0; k <= 0xf && i + k < bytes.size(); ++k) {
+					int c = bytes.get(i + k);
+					System.out.print((Character.isISOControl(c)) ? '.' : (char)c);
 				}
 
 				System.out.println();
