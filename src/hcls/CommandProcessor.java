@@ -113,6 +113,10 @@ public class CommandProcessor {
 				command_list(cwd.getAbsolutePath(new File(cmdarray[1])));
 				break;
 
+			case "version":
+				command_version();
+				break;
+
 			case "exit":
 				System.exit(0);
 				break;
@@ -403,6 +407,10 @@ public class CommandProcessor {
 		} catch(NullPointerException e) {
 			throw new CommandLineException("it is not a directory");
 		}
+	}
+
+	private static void command_version() {
+		System.out.println(ShellDatas.version);
 	}
 
 	public static String[] splitCommandLine(String command) {
