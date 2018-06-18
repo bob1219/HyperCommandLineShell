@@ -39,7 +39,7 @@ class Main {
 	}
 
 	private static void commandLine() {
-		System.out.println("HyperCommandLineShell Version " + ShellDatas.version)
+		System.out.println("HyperCommandLineShell Version " + ShellDatas.version);
 		System.out.println("Copyright 2018 Daiki Yoshida");
 		System.out.println();
 		System.out.println("This program comes with ABSOLUTELY NO WARRANTY.");

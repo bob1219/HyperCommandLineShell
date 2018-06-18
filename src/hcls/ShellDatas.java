@@ -17,6 +17,6 @@
 
 package hcls;
 
-class ShellDatas {
-	public static final String version = "1.0.0";
+public class ShellDatas {
+	public static final String version = "1.1.0";
 }

@@ -463,6 +463,6 @@ public class CommandProcessor {
 		}
 
 		tokens.add(temp);
-		return (String[])tokens.toArray();
+		return tokens.toArray(new String[tokens.size()]);
 	}
 }

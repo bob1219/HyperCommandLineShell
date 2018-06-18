@@ -146,6 +146,20 @@ Commands
 	* Usage  
 	`now`
 
+* list
+	* Description  
+	Print list of files or directories in a directory
+
+	* Usage  
+	`list [directory-name]`
+
+* version
+	* Description  
+	Print current version
+
+	* Usage  
+	`version`
+
 * exit
 	* Description  
 	Exit shell
@@ -157,3 +171,9 @@ History
 -------
 * 1.0.0 (June 18th, 2018)
 	* First Version
+
+* 1.1.0 (June 18th, 2018)
+	* Addition quote feature (by ')
+	* Addition version command
+	* Print current version when boot
+	* Addition list command
