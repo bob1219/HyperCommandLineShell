@@ -109,6 +109,10 @@ public class CommandProcessor {
 				command_now();
 				break;
 
+			case "list":
+				command_list(cwd.getAbsolutePath(new File(cmdarray[1])));
+				break;
+
 			case "exit":
 				System.exit(0);
 				break;
@@ -387,6 +391,18 @@ public class CommandProcessor {
 
 	private static void command_now() {
 		System.out.println(new Date().toString());
+	}
+
+	private static void command_list(File dir) throws CommandLineException {
+		try {
+			for(File fileInTheDir: dir.listFiles()) {
+				System.out.println((fileInTheDir.isFile() ? "file" : "dir") + ":\t" + fileInTheDir.getName());
+			}
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
+		} catch(NullPointerException e) {
+			throw new CommandLineException("it is not a directory");
+		}
 	}
 
 	public static String[] splitCommandLine(String command) {
