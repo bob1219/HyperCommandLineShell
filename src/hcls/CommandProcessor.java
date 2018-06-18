@@ -414,6 +414,55 @@ public class CommandProcessor {
 	}
 
 	public static String[] splitCommandLine(String command) {
-		return command.split(" ");
+		final int commandLength = command.length();
+		boolean quoted = false;
+		String temp = "";
+		List<String> tokens = new ArrayList<String>();
+		boolean escaped = false;
+
+		for(int i = 0; i < commandLength; ++i) {
+			char c = command.charAt(i);
+			switch(c) {
+			case ' ':
+				if(quoted) {
+					temp += ' ';
+				} else {
+					tokens.add(temp);
+					temp = "";
+				}
+				break;
+
+			case '\'':
+				if(escaped) {
+					temp += '\'';
+					escaped = false;
+				} else if(quoted) {
+					temp.replaceAll("\\\\\\\\", "\\");
+					temp.replaceAll("\\\\'", "'");
+
+					tokens.add(temp);
+					temp = "";
+					quoted = false;
+				} else {
+					quoted = true;
+				}
+				break;
+
+			case '\\':
+				if(escaped) {
+					temp += '\\';
+					escaped = false;
+				} else {
+					escaped = true;
+				}
+				break;
+
+			default:
+				temp += c;
+			}
+		}
+
+		tokens.add(temp);
+		return (String[])tokens.toArray();
 	}
 }
