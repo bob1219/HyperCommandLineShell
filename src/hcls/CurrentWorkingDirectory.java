@@ -16,23 +16,24 @@
 // along with HyperCommandLineShell. If not, see <http://www.gnu.org/licenses/>.
 
 package hcls;
+import java.io.*;
 
 public class CurrentWorkingDirectory {
 	private File cwd;
 
-	public CurrentWorkingDirectory() { cwd = new File("."); }
-	public CurrentWorkingDirectory(File dir) { cwd = dir; }
+	public CurrentWorkingDirectory() { cwd = new File(".").getAbsoluteFile(); }
+	public CurrentWorkingDirectory(File dir) { cwd = dir.getAbsoluteFile(); }
 
 	public File getAbsolutePath(File file) {
 		return file.isAbsolute() ? file : new File(cwd.toString() + '/' + file.toString());
 	}
 
 	public File get() { return cwd; }
-	public void set(File dir) { cwd = dir; }
+	public void set(File dir) { cwd = dir.getAbsoluteFile(); }
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj == this || (obj.getClass() == getClass() && (CurrentWorkingDirectory)obj.cwd.equals(cwd));
+		return obj == this || (obj.getClass() == getClass() && ((CurrentWorkingDirectory)obj).cwd.equals(cwd));
 	}
 
 	@Override

@@ -18,6 +18,6 @@
 package hcls;
 
 public class FatalException extends RuntimeException {
-	FatalException() { super(); }
-	FatalException(String message) { super(message); }
+	public FatalException() { super(); }
+	public FatalException(String message) { super(message); }
 }

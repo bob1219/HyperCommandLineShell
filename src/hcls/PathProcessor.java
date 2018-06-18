@@ -15,11 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with HyperCommandLineShell. If not, see <http://www.gnu.org/licenses/>.
 
-import java.util.*;
 package hcls;
+import java.util.*;
+import java.io.*;
 
-private class PathProcessor {
-	private List<File> paths;
+class PathProcessor {
+	private static List<File> paths;
+	private static File pathFileDir = new File(new File(".").getAbsolutePath() + "/../data/PATH");
 
 	public static File pathProcess(File file, CurrentWorkingDirectory cwd) throws IOException {
 		if(file.isAbsolute()) {
@@ -46,27 +48,31 @@ private class PathProcessor {
 			read();
 		} catch(FileNotFoundException e) {}
 
-		paths.add(dir);
-		write();
+		if(!paths.contains(dir)) {
+			paths.add(dir);
+			write();
+		}
 	}
 
 	public static void del(int n) throws IOException {
 		read();
-		paths.remove(n);
+		paths.remove(--n);
 		write();
 	}
 
 	public static void clear() throws IOException {
-		read();
-		paths.clear();
+		paths = new ArrayList<File>();
 		write();
 	}
 
-	public static List<File> getPaths() { return paths; }
+	public static List<File> getPaths() throws FileNotFoundException, IOException {
+		read();
+		return paths;
+	}
 
-	private static void read() throws IOException {
+	private static void read() throws FileNotFoundException, IOException {
 		paths = new ArrayList<File>();
-		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("./../datas/PATH")))) {
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("./../data/PATH")))) {
 			String line;
 			while((line = reader.readLine()) != null) {
 				paths.add(new File(line));
@@ -75,7 +81,7 @@ private class PathProcessor {
 	}
 
 	private static void write() throws IOException {
-		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("./../datas/PATH")))) {
+		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("./../data/PATH")))) {
 			for(File path: paths) {
 				writer.write(path.toString());
 				writer.newLine();
