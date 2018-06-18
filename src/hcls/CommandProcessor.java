@@ -109,6 +109,14 @@ public class CommandProcessor {
 				command_now();
 				break;
 
+			case "list":
+				command_list(cwd.getAbsolutePath(new File(cmdarray[1])));
+				break;
+
+			case "version":
+				command_version();
+				break;
+
 			case "exit":
 				System.exit(0);
 				break;
@@ -389,7 +397,72 @@ public class CommandProcessor {
 		System.out.println(new Date().toString());
 	}
 
+	private static void command_list(File dir) throws CommandLineException {
+		try {
+			for(File fileInTheDir: dir.listFiles()) {
+				System.out.println((fileInTheDir.isFile() ? "file" : "dir") + ":\t" + fileInTheDir.getName());
+			}
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
+		} catch(NullPointerException e) {
+			throw new CommandLineException("it is not a directory");
+		}
+	}
+
+	private static void command_version() {
+		System.out.println(ShellDatas.version);
+	}
+
 	public static String[] splitCommandLine(String command) {
-		return command.split(" ");
+		final int commandLength = command.length();
+		boolean quoted = false;
+		String temp = "";
+		List<String> tokens = new ArrayList<String>();
+		boolean escaped = false;
+
+		for(int i = 0; i < commandLength; ++i) {
+			char c = command.charAt(i);
+			switch(c) {
+			case ' ':
+				if(quoted) {
+					temp += ' ';
+				} else {
+					tokens.add(temp);
+					temp = "";
+				}
+				break;
+
+			case '\'':
+				if(escaped) {
+					temp += '\'';
+					escaped = false;
+				} else if(quoted) {
+					temp.replaceAll("\\\\\\\\", "\\");
+					temp.replaceAll("\\\\'", "'");
+
+					tokens.add(temp);
+					temp = "";
+					quoted = false;
+				} else {
+					quoted = true;
+				}
+				break;
+
+			case '\\':
+				if(escaped) {
+					temp += '\\';
+					escaped = false;
+				} else {
+					escaped = true;
+				}
+				break;
+
+			default:
+				temp += c;
+			}
+		}
+
+		tokens.add(temp);
+		return tokens.toArray(new String[tokens.size()]);
 	}
 }
