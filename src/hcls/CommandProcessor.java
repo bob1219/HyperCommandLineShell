@@ -449,11 +449,15 @@ public class CommandProcessor {
 				break;
 
 			case '\\':
-				if(escaped) {
-					temp += '\\';
-					escaped = false;
+				if(quoted) {
+					if(escaped) {
+						temp += '\\';
+						escaped = false;
+					} else {
+						escaped = true;
+					}
 				} else {
-					escaped = true;
+					temp += '\\';
 				}
 				break;
 
