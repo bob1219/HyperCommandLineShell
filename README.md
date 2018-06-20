@@ -177,3 +177,6 @@ History
 	* Addition version command
 	* Print current version when boot
 	* Addition list command
+
+* 1.1.1 (June 20th, 2018)
+	* Bugfix quote feature
