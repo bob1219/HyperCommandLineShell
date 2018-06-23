@@ -20,8 +20,7 @@ import java.util.*;
 import java.io.*;
 
 class PathProcessor {
-	private static List<File> paths;
-	private static File pathFileDir = new File(new File(".").getAbsolutePath() + "/../data/PATH");
+	private static List<File> paths = null;
 
 	public static File pathProcess(File file, CurrentWorkingDirectory cwd) throws IOException {
 		if(file.isAbsolute()) {
@@ -71,11 +70,13 @@ class PathProcessor {
 	}
 
 	private static void read() throws FileNotFoundException, IOException {
-		paths = new ArrayList<File>();
-		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("./../data/PATH")))) {
-			String line;
-			while((line = reader.readLine()) != null) {
-				paths.add(new File(line));
+		if(paths == null) {
+			paths = new ArrayList<File>();
+			try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("./../data/PATH")))) {
+				String line;
+				while((line = reader.readLine()) != null) {
+					paths.add(new File(line));
+				}
 			}
 		}
 	}
