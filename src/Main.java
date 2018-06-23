@@ -27,8 +27,6 @@ class Main {
 			System.exit(1);
 		} catch(Exception e) {
 			System.err.println("An unexcepted exception occured.");
-			System.err.println("Error message: " + e.getMessage());
-
 			System.err.println("Stack trace:");
 			e.printStackTrace();
 			System.err.println();
