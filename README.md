@@ -180,3 +180,6 @@ History
 
 * 1.1.1 (June 20th, 2018)
 	* Bugfix quote feature
+
+* 1.1.2 (June 23rd, 2018)
+	* Bugfix quote feature
