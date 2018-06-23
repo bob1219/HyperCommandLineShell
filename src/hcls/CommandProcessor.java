@@ -413,7 +413,7 @@ public class CommandProcessor {
 		System.out.println(ShellDatas.version);
 	}
 
-	public static String[] splitCommandLine(String command) {
+	public static String[] splitCommandLine(String command) throws CommandLineException {
 		final int commandLength = command.length();
 		boolean quoted = false;
 		String temp = "";
@@ -424,6 +424,10 @@ public class CommandProcessor {
 			char c = command.charAt(i);
 			switch(c) {
 			case ' ':
+				if(escaped) {
+					throw new CommandLineException("invalid character alignment");
+				}
+
 				if(quoted) {
 					temp += ' ';
 				} else {
@@ -462,6 +466,9 @@ public class CommandProcessor {
 				break;
 
 			default:
+				if(escaped) {
+					throw new CommandLineException("invalid character alignment");
+				}
 				temp += c;
 			}
 		}
