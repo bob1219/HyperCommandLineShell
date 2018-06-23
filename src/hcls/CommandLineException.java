@@ -18,6 +18,5 @@
 package hcls;
 
 public class CommandLineException extends Exception {
-	CommandLineException() { super(); }
 	CommandLineException(String message) { super(message); }
 }
