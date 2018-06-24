@@ -18,5 +18,5 @@
 package hcls;
 
 public class ShellDatas {
-	public static final String version = "1.1.2";
+	public static final String version = "1.2.0";
 }
