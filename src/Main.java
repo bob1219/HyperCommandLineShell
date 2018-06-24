@@ -21,10 +21,28 @@ import hcls.*;
 class Main {
 	public static void main(String[] args) {
 		try {
-			commandLine();
+			switch(args.length) {
+			case 0:
+				commandLine();
+				break;
+
+			case 1:
+				try {
+					CommandProcessor.script(args[0]);
+				} catch(FileNotFoundException e) {
+					throw new FatalException("file not found");
+				} catch(IOException e) {
+					throw new FatalException("I/O error");
+				}
+				break;
+
+			default:
+				System.err.println("Usage: java -jar hcls.jar <script-filename>");
+				System.exit(1);
+			}
 		} catch(FatalException e) {
 			System.err.println("Error: " + e.getMessage());
-			System.exit(1);
+			System.exit(2);
 		} catch(Exception e) {
 			System.err.println("An unexcepted exception occured.");
 			System.err.println("Stack trace:");
@@ -34,7 +52,7 @@ class Main {
 			System.err.println("If you are developer of HyperCommandLineShell, you should bugfix it.");
 			System.err.println("If else, USE OTHER VERY VERY GREAT COMMAND-LINE-SHELL!");
 
-			System.exit(2);
+			System.exit(3);
 		}
 	}
 

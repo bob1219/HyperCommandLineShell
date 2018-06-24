@@ -117,6 +117,16 @@ public class CommandProcessor {
 				command_version();
 				break;
 
+			case "script":
+				try {
+					script(cwd.getAbsolutePath(new File(cmdarray[1])));
+				} catch(FileNotFoundException e) {
+					throw new CommandLineException("file not found");
+				} catch(IOException e) {
+					throw new CommandLineException("I/O error");
+				}
+				break;
+
 			case "exit":
 				System.exit(0);
 				break;
@@ -475,5 +485,24 @@ public class CommandProcessor {
 
 		tokens.add(temp);
 		return tokens.toArray(new String[tokens.size()]);
+	}
+
+	public static void script(File file) throws FileNotFoundException, IOException {
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
+			String line;
+			while((line = reader.readLine()) != null) {
+				List<String> tokens = Arrays.asList(splitCommandLine(line));
+				int i = tokens.indexOf("#");
+				if(i != -1) {
+					tokens = tokens.subList(0, i);
+				}
+
+				if(tokens.isEmpty()) {
+					continue;
+				}
+
+				commandProcess(tokens.toArray());
+			}
+		}
 	}
 }
