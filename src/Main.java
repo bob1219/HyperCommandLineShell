@@ -28,7 +28,7 @@ class Main {
 
 			case 1:
 				try {
-					CommandProcessor.script(args[0]);
+					CommandProcessor.script(new File(args[0]), new CurrentWorkingDirectory());
 				} catch(FileNotFoundException e) {
 					throw new FatalException("file not found");
 				} catch(IOException e) {

@@ -119,7 +119,7 @@ public class CommandProcessor {
 
 			case "script":
 				try {
-					script(cwd.getAbsolutePath(new File(cmdarray[1])));
+					script(cwd.getAbsolutePath(new File(cmdarray[1])), cwd);
 				} catch(FileNotFoundException e) {
 					throw new CommandLineException("file not found");
 				} catch(IOException e) {
@@ -487,21 +487,25 @@ public class CommandProcessor {
 		return tokens.toArray(new String[tokens.size()]);
 	}
 
-	public static void script(File file) throws FileNotFoundException, IOException {
+	public static void script(File file, CurrentWorkingDirectory cwd) throws FileNotFoundException, IOException {
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)))) {
 			String line;
 			while((line = reader.readLine()) != null) {
-				List<String> tokens = Arrays.asList(splitCommandLine(line));
-				int i = tokens.indexOf("#");
-				if(i != -1) {
-					tokens = tokens.subList(0, i);
-				}
+				try {
+					List<String> tokens = Arrays.asList(splitCommandLine(line));
+					int i = tokens.indexOf("#");
+					if(i != -1) {
+						tokens = tokens.subList(0, i);
+					}
 
-				if(tokens.isEmpty()) {
-					continue;
-				}
+					if(tokens.isEmpty()) {
+						continue;
+					}
 
-				commandProcess(tokens.toArray());
+					commandProcess(tokens.toArray(new String[tokens.size()]), cwd);
+				} catch(CommandLineException e) {
+					System.err.println("Error: " + e.getMessage());
+				}
 			}
 		}
 	}
