@@ -15,7 +15,7 @@ JDK 9.0.1
 
 Usage
 -----
-`java -jar hcls.jar`
+`java -jar hcls.jar <script-filename>`
 
 Commands
 --------
@@ -160,6 +160,13 @@ Commands
 	* Usage  
 	`version`
 
+* script
+	* Description  
+	Run script
+
+	* Usage  
+	`script [script-filename]`
+
 * exit
 	* Description  
 	Exit shell
@@ -183,3 +190,6 @@ History
 
 * 1.1.2 (June 23rd, 2018)
 	* Bugfix quote feature
+
+* 1.2.0 (June 24th, 2018)
+	* Addition script feature
