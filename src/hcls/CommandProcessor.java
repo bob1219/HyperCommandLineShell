@@ -68,20 +68,6 @@ public class CommandProcessor {
 				command_pcwd(cwd);
 				break;
 
-			case "exec":
-				if(cmdarray.length == 1) {
-					throw new CommandLineException("few args");
-				}
-
-				// softwareCmdArray = {cmdarray[1], ..., cmdarray[cmdarray.length - 1]}
-				String[] softwareCmdArray = new String[cmdarray.length - 1];
-				for(int i = 0; i < softwareCmdArray.length; ++i) {
-					softwareCmdArray[i] = cmdarray[i + 1];
-				}
-
-				command_exec(cwd, softwareCmdArray);
-				break;
-
 			case "path":
 				switch(cmdarray[1]) {
 				case "add":
@@ -132,7 +118,13 @@ public class CommandProcessor {
 				break;
 
 			default:
-				throw new CommandLineException("unknown command");
+				// softwareCmdArray = {cmdarray[1], ..., cmdarray[cmdarray.length - 1]}
+				String[] softwareCmdArray = new String[cmdarray.length - 1];
+				for(int i = 0; i < softwareCmdArray.length; ++i) {
+					softwareCmdArray[i] = cmdarray[i + 1];
+				}
+
+				exec(cwd, softwareCmdArray);
 			}
 		} catch(ArrayIndexOutOfBoundsException e) {
 			throw new CommandLineException("few args");
@@ -339,27 +331,6 @@ public class CommandProcessor {
 		System.out.println(cwd.toString());
 	}
 
-	private static void command_exec(CurrentWorkingDirectory cwd, String[] cmdarray) throws CommandLineException {
-		try {
-			File file = PathProcessor.pathProcess(new File(cmdarray[0]), cwd);
-			if(file == null) {
-				throw new CommandLineException("it do not exists");
-			}
-
-			cmdarray[0] = file.toString();
-
-			ProcessBuilder pb = new ProcessBuilder(cmdarray);
-			pb.directory(cwd.get());
-			pb.inheritIO();
-
-			pb.start().waitFor();
-		} catch(SecurityException e) {
-			throw new CommandLineException("access denied");
-		} catch(IOException e) {
-			throw new CommandLineException("I/O error");
-		} catch(InterruptedException e) {}
-	}
-
 	private static void command_path_add(File dir) throws CommandLineException {
 		try {
 			PathProcessor.add(dir);
@@ -421,6 +392,27 @@ public class CommandProcessor {
 
 	private static void command_version() {
 		System.out.println(ShellDatas.version);
+	}
+
+	private static void exec(CurrentWorkingDirectory cwd, String[] cmdarray) throws CommandLineException {
+		try {
+			File file = PathProcessor.pathProcess(new File(cmdarray[0]), cwd);
+			if(file == null) {
+				throw new CommandLineException("unknown command or software");
+			}
+
+			cmdarray[0] = file.toString();
+
+			ProcessBuilder pb = new ProcessBuilder(cmdarray);
+			pb.directory(cwd.get());
+			pb.inheritIO();
+
+			pb.start().waitFor();
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
+		} catch(InterruptedException e) {}
 	}
 
 	public static String[] splitCommandLine(String command) throws CommandLineException {
