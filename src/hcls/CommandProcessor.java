@@ -118,13 +118,7 @@ public class CommandProcessor {
 				break;
 
 			default:
-				// softwareCmdArray = {cmdarray[1], ..., cmdarray[cmdarray.length - 1]}
-				String[] softwareCmdArray = new String[cmdarray.length - 1];
-				for(int i = 0; i < softwareCmdArray.length; ++i) {
-					softwareCmdArray[i] = cmdarray[i + 1];
-				}
-
-				exec(cwd, softwareCmdArray);
+				exec(cwd, cmdarray);
 			}
 		} catch(ArrayIndexOutOfBoundsException e) {
 			throw new CommandLineException("few args");
