@@ -96,13 +96,6 @@ Commands
 	* Usage  
 	`pcwd`
 
-* exec
-	* Description  
-	Execute a software
-
-	* Usage  
-	`exec [software-name] <arguments>`
-
 * path
 	* Description  
 	Addition, Delete, Print, or Clear path settings
@@ -193,3 +186,7 @@ History
 
 * 1.2.0 (June 24th, 2018)
 	* Addition script feature
+
+* 2.0.0 (June 25th, 2018)
+	* Delete exec command
+	* Addition standard boot software syntax (exec a.out -> a.out)
