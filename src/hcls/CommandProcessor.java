@@ -211,11 +211,11 @@ public class CommandProcessor {
 	private static boolean copyDir(File source, File dest) throws CommandLineException {
 		try {
 			if(!source.exists()) {
-				throw new CommandLineException("source do not exists");
+				throw new CommandLineException("source directory does not exist");
 			}
 
 			if(!source.isDirectory()) {
-				throw new CommandLineException("source is not directory");
+				throw new CommandLineException("source is not a directory");
 			}
 
 			if(dest.exists()) {
