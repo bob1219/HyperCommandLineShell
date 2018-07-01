@@ -24,7 +24,7 @@ class PathProcessor {
 
 	public static File pathProcess(File file, CurrentWorkingDirectory cwd) throws IOException {
 		if(file.isAbsolute()) {
-			return file;
+			return file.exists() ? file : null;
 		} else {
 			if(new File(cwd.toString() + '/' + file.toString()).exists()) {
 				return new File(cwd.toString() + '/' + file.toString());
