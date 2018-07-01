@@ -190,3 +190,7 @@ History
 * 2.0.0 (June 25th, 2018)
 	* Delete exec command
 	* Addition standard boot software syntax (exec a.out -> a.out)
+
+* 2.0.1 (July 1st, 2018)
+	* Bugfix standard boot software syntax feature
+	* Modify error messages
