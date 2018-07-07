@@ -19,6 +19,7 @@ package hcls;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+import java.util.regex.*;
 
 public class CommandProcessor {
 	public static void commandProcess(String[] cmdarray, CurrentWorkingDirectory cwd) throws CommandLineException {
@@ -386,7 +387,7 @@ public class CommandProcessor {
 	private static void command_list(File dir, String regex) throws CommandLineException {
 		try {
 			for(File fileInTheDir: dir.listFiles()) {
-				if(fileInTheDir.toString().maches(regex)) {
+				if(fileInTheDir.toString().matches(regex)) {
 					System.out.println((fileInTheDir.isFile() ? "file" : "dir") + ":\t" + fileInTheDir.getName());
 				}
 			}
