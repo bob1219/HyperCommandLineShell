@@ -99,11 +99,11 @@ public class CommandProcessor {
 			case "list":
 				switch(cmdarray.length) {
 				case 1:
-					command_list(cwd.get(), "*");
+					command_list(cwd.get(), ".*");
 					break;
 
 				case 2:
-					command_list(cwd.getAbsolutePath(new File(cmdarray[1])), "*");
+					command_list(cwd.getAbsolutePath(new File(cmdarray[1])), ".*");
 					break;
 
 				default:
