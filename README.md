@@ -144,7 +144,9 @@ Commands
 	Print list of files or directories in a directory
 
 	* Usage  
-	`list [directory-name]`
+	`list <directory-name> <regex>`  
+	(default of directory-name:	".",
+	 default of regex:		".*")
 
 * version
 	* Description  
@@ -194,3 +196,6 @@ History
 * 2.0.1 (July 1st, 2018)
 	* Bugfix standard boot software syntax feature
 	* Modify error messages
+
+* 2.1.0 (July 7th, 2018)
+	* Addition regex match feature to list command

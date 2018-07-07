@@ -19,6 +19,7 @@ package hcls;
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
+import java.util.regex.*;
 
 public class CommandProcessor {
 	public static void commandProcess(String[] cmdarray, CurrentWorkingDirectory cwd) throws CommandLineException {
@@ -96,7 +97,18 @@ public class CommandProcessor {
 				break;
 
 			case "list":
-				command_list(cwd.getAbsolutePath(new File(cmdarray[1])));
+				switch(cmdarray.length) {
+				case 1:
+					command_list(cwd.get(), ".*");
+					break;
+
+				case 2:
+					command_list(cwd.getAbsolutePath(new File(cmdarray[1])), ".*");
+					break;
+
+				default:
+					command_list(cwd.getAbsolutePath(new File(cmdarray[1])), cmdarray[2]);
+				}
 				break;
 
 			case "version":
@@ -372,15 +384,19 @@ public class CommandProcessor {
 		System.out.println(new Date().toString());
 	}
 
-	private static void command_list(File dir) throws CommandLineException {
+	private static void command_list(File dir, String regex) throws CommandLineException {
 		try {
 			for(File fileInTheDir: dir.listFiles()) {
-				System.out.println((fileInTheDir.isFile() ? "file" : "dir") + ":\t" + fileInTheDir.getName());
+				if(fileInTheDir.toString().matches(regex)) {
+					System.out.println((fileInTheDir.isFile() ? "file" : "dir") + ":\t" + fileInTheDir.getName());
+				}
 			}
 		} catch(SecurityException e) {
 			throw new CommandLineException("access denied");
 		} catch(NullPointerException e) {
 			throw new CommandLineException("it is not a directory");
+		} catch(PatternSyntaxException e) {
+			throw new CommandLineException("the regex is invalid");
 		}
 	}
 
