@@ -199,3 +199,6 @@ History
 
 * 2.1.0 (July 7th, 2018)
 	* Addition regex match feature to list command
+
+* 2.1.1 (July 9th, 2018)
+	* Bugfix list command
