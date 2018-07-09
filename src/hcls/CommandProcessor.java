@@ -387,7 +387,7 @@ public class CommandProcessor {
 	private static void command_list(File dir, String regex) throws CommandLineException {
 		try {
 			for(File fileInTheDir: dir.listFiles()) {
-				if(fileInTheDir.toString().matches(regex)) {
+				if(fileInTheDir.getName().matches(regex)) {
 					System.out.println((fileInTheDir.isFile() ? "file" : "dir") + ":\t" + fileInTheDir.getName());
 				}
 			}
