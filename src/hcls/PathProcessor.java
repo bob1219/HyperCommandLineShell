@@ -21,25 +21,65 @@ import java.io.*;
 
 class PathProcessor {
 	private static List<File> paths = null;
+	private static String pathsFile = "./../data/PATH";
 
 	public static File pathProcess(File file, CurrentWorkingDirectory cwd) throws IOException {
+		List<String> executableExtensions = getExecutableExtensions();
 		if(file.isAbsolute()) {
-			return file.exists() ? file : null;
+			if(file.exists()) {
+				return file;
+			}
+
+			for(String executableExtension: executableExtensions) {
+				File file2 = new File(file.toString() + executableExtension);
+				if(file2.exists()) {
+					return file2;
+				}
+			}
 		} else {
-			if(new File(cwd.toString() + '/' + file.toString()).exists()) {
-				return new File(cwd.toString() + '/' + file.toString());
+			File file3 = new File(cwd.toString() + '/' + file.toString());
+			if(file3.exists()) {
+				return file3;
+			}
+
+			for(String executableExtension: executableExtensions) {
+				File file4 = new File(cwd.toString() + '/' + file.toString() + executableExtension);
+				if(file4.exists()) {
+					return file4;
+				}
 			}
 
 			read();
 			for(File path: paths) {
-				File checkFile = new File(path.toString() + '/' + file.toString());
-				if(checkFile.exists()) {
-					return checkFile;
+				File file5 = new File(path.toString() + '/' + file.toString());
+				if(file5.exists()) {
+					return file5;
+				}
+
+				for(String executableExtension: executableExtensions) {
+					File file6 = new File(path.toString() + '/' + file.toString() + executableExtension);
+					if(file6.exists()) {
+						return file6;
+					}
 				}
 			}
 		}
 
 		return null;
+	}
+
+	private static List<String> getExecutableExtensions() throws IOException {
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("./../data/EXECUTABLE_EXTENSIONS"))))) {
+			List<String> executableExtensions = new ArrayList<String>();
+			String line;
+			while((line = reader.readLine()) != null) {
+				executableExtensions.add(line);
+			}
+
+			return executableExtensions;
+		} catch(FileNotFoundException e) {
+			return new ArrayList<String>();
+		}
 	}
 
 	public static void add(File dir) throws IOException {
@@ -60,7 +100,7 @@ class PathProcessor {
 	}
 
 	public static void clear() throws IOException {
-		paths = new ArrayList<File>();
+		paths.clear();
 		write();
 	}
 
@@ -72,7 +112,7 @@ class PathProcessor {
 	private static void read() throws FileNotFoundException, IOException {
 		if(paths == null) {
 			paths = new ArrayList<File>();
-			try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("./../data/PATH")))) {
+			try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(pathsFile)))) {
 				String line;
 				while((line = reader.readLine()) != null) {
 					paths.add(new File(line));
@@ -82,7 +122,7 @@ class PathProcessor {
 	}
 
 	private static void write() throws IOException {
-		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("./../data/PATH")))) {
+		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathsFile)))) {
 			for(File path: paths) {
 				writer.write(path.toString());
 				writer.newLine();

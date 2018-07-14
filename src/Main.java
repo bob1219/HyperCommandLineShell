@@ -21,12 +21,9 @@ import hcls.*;
 class Main {
 	public static void main(String[] args) {
 		try {
-			switch(args.length) {
-			case 0:
+			if(args.length == 0) {
 				commandLine();
-				break;
-
-			case 1:
+			} else {
 				try {
 					CommandProcessor.script(new File(args[0]), new CurrentWorkingDirectory());
 				} catch(FileNotFoundException e) {
@@ -34,25 +31,37 @@ class Main {
 				} catch(IOException e) {
 					throw new FatalException("I/O error");
 				}
-				break;
-
-			default:
-				System.err.println("Usage: java -jar hcls.jar <script-filename>");
-				System.exit(1);
 			}
 		} catch(FatalException e) {
 			System.err.println("Error: " + e.getMessage());
 			System.exit(2);
 		} catch(Exception e) {
-			System.err.println("An unexcepted exception occured.");
-			System.err.println("Stack trace:");
+			System.err.println("THIS IS MY BUG: An unexcepted exception occured.");
+			System.err.println("Stack Trace:");
 			e.printStackTrace();
 			System.err.println();
 
-			System.err.println("If you are developer of HyperCommandLineShell, you should bugfix it.");
-			System.err.println("If else, USE OTHER VERY VERY GREAT COMMAND-LINE-SHELL!");
-
+			System.err.println("If you are developer of this shell, you should fix the bug.");
+			System.err.println("If not, you should other shells.");
 			System.exit(3);
+		} catch(Error e) {
+			System.err.println("THIS IS NOT MY BUG: An unexcepted exception occured.");
+			System.err.println("Stack Trace:");
+			e.printStackTrace();
+			System.err.println();
+
+			System.err.println("If you are developer of this shell, you should investigate the cause of the exception.");
+			System.err.println("If not, you should ask any Java programmers for help.");
+			System.exit(4);
+		} catch(Throwable e) {
+			System.err.println("CAUSE UNKNOWN: An unexcepted exception occured.");
+			System.err.println("Stack Trace:");
+			e.printStackTrace();
+			System.err.println();
+
+			System.err.println("If you are developer of this shell, you should investigate the cause of the exception.");
+			System.err.println("If not, you should ask any Java programmers for help.");
+			System.exit(5);
 		}
 	}
 

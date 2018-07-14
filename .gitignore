@@ -1,4 +1,3 @@
 data/*
 !.gitkeep
 *.mf
-*.pl
