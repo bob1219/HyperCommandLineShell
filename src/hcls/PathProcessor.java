@@ -78,7 +78,7 @@ class PathProcessor {
 
 			return executableExtensions;
 		} catch(FileNotFoundException e) {
-			return null;
+			return new ArrayList<String>();
 		}
 	}
 
@@ -112,7 +112,7 @@ class PathProcessor {
 	private static void read() throws FileNotFoundException, IOException {
 		if(paths == null) {
 			paths = new ArrayList<File>();
-			try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(pathsFile))) {
+			try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(pathsFile)))) {
 				String line;
 				while((line = reader.readLine()) != null) {
 					paths.add(new File(line));
@@ -122,7 +122,7 @@ class PathProcessor {
 	}
 
 	private static void write() throws IOException {
-		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathsFile))) {
+		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathsFile)))) {
 			for(File path: paths) {
 				writer.write(path.toString());
 				writer.newLine();
