@@ -78,7 +78,7 @@ class PathProcessor {
 
 			return executableExtensions;
 		} catch(FileNotFoundException e) {
-			return null;
+			return new ArrayList<String>();
 		}
 	}
 
