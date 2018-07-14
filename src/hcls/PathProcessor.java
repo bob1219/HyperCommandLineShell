@@ -21,6 +21,7 @@ import java.io.*;
 
 class PathProcessor {
 	private static List<File> paths = null;
+	private static String pathsFile = "./../data/PATH";
 
 	public static File pathProcess(File file, CurrentWorkingDirectory cwd) throws IOException {
 		List<String> executableExtensions = getExecutableExtensions();
@@ -36,29 +37,29 @@ class PathProcessor {
 				}
 			}
 		} else {
-			File checkFile1 = new File(cwd.toString() + '/' + file.toString());
-			if(checkFile1.exists()) {
-				return checkFile1;
+			File file3 = new File(cwd.toString() + '/' + file.toString());
+			if(file3.exists()) {
+				return file3;
 			}
 
 			for(String executableExtension: executableExtensions) {
-				File checkFile2 = new File(cwd.toString() + '/' + file.toString() + executableExtension);
-				if(checkFile2.exists()) {
-					return checkFile2;
+				File file4 = new File(cwd.toString() + '/' + file.toString() + executableExtension);
+				if(file4.exists()) {
+					return file4;
 				}
 			}
 
 			read();
 			for(File path: paths) {
-				File checkFile3 = new File(path.toString() + '/' + file.toString());
-				if(checkFile3.exists()) {
-					return checkFile3;
+				File file5 = new File(path.toString() + '/' + file.toString());
+				if(file5.exists()) {
+					return file5;
 				}
 
 				for(String executableExtension: executableExtensions) {
-					File checkFile4 = new File(path.toString() + '/' + file.toString() + executableExtension);
-					if(checkFile4.exists()) {
-						return checkFile4;
+					File file6 = new File(path.toString() + '/' + file.toString() + executableExtension);
+					if(file6.exists()) {
+						return file6;
 					}
 				}
 			}
@@ -111,7 +112,7 @@ class PathProcessor {
 	private static void read() throws FileNotFoundException, IOException {
 		if(paths == null) {
 			paths = new ArrayList<File>();
-			try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream("./../data/PATH")))) {
+			try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(pathsFile))) {
 				String line;
 				while((line = reader.readLine()) != null) {
 					paths.add(new File(line));
@@ -121,7 +122,7 @@ class PathProcessor {
 	}
 
 	private static void write() throws IOException {
-		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("./../data/PATH")))) {
+		try(BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(pathsFile))) {
 			for(File path: paths) {
 				writer.write(path.toString());
 				writer.newLine();
