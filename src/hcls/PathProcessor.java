@@ -23,23 +23,62 @@ class PathProcessor {
 	private static List<File> paths = null;
 
 	public static File pathProcess(File file, CurrentWorkingDirectory cwd) throws IOException {
+		List<String> executableExtensions = getExecutableExtensions();
 		if(file.isAbsolute()) {
-			return file.exists() ? file : null;
+			if(file.exists()) {
+				return file;
+			}
+
+			for(String executableExtension: executableExtensions) {
+				File file2 = new File(file.toString() + executableExtension);
+				if(file2.exists()) {
+					return file2;
+				}
+			}
 		} else {
-			if(new File(cwd.toString() + '/' + file.toString()).exists()) {
-				return new File(cwd.toString() + '/' + file.toString());
+			File checkFile1 = new File(cwd.toString() + '/' + file.toString());
+			if(checkFile1.exists()) {
+				return checkFile1;
+			}
+
+			for(String executableExtension: executableExtensions) {
+				File checkFile2 = new File(cwd.toString() + '/' + file.toString() + executableExtension);
+				if(checkFile2.exists()) {
+					return checkFile2;
+				}
 			}
 
 			read();
 			for(File path: paths) {
-				File checkFile = new File(path.toString() + '/' + file.toString());
-				if(checkFile.exists()) {
-					return checkFile;
+				File checkFile3 = new File(path.toString() + '/' + file.toString());
+				if(checkFile3.exists()) {
+					return checkFile3;
+				}
+
+				for(String executableExtension: executableExtensions) {
+					File checkFile4 = new File(path.toString() + '/' + file.toString() + executableExtension);
+					if(checkFile4.exists()) {
+						return checkFile4;
+					}
 				}
 			}
 		}
 
 		return null;
+	}
+
+	private static List<String> getExecutableExtensions() throws IOException {
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File("./../data/EXECUTABLE_EXTENSIONS"))))) {
+			List<String> executableExtensions = new ArrayList<String>();
+			String line;
+			while((line = reader.readLine()) != null) {
+				executableExtensions.add(line);
+			}
+
+			return executableExtensions;
+		} catch(FileNotFoundException e) {
+			return null;
+		}
 	}
 
 	public static void add(File dir) throws IOException {
@@ -60,7 +99,7 @@ class PathProcessor {
 	}
 
 	public static void clear() throws IOException {
-		paths = new ArrayList<File>();
+		paths.clear();
 		write();
 	}
 

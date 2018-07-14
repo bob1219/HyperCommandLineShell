@@ -342,6 +342,8 @@ public class CommandProcessor {
 			PathProcessor.add(dir);
 		} catch(IOException e) {
 			throw new CommandLineException("I/O error");
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
 		}
 	}
 
@@ -354,6 +356,8 @@ public class CommandProcessor {
 			throw new CommandLineException("I/O error");
 		} catch(IndexOutOfBoundsException e) {
 			throw new CommandLineException("invalid setting number");
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
 		}
 	}
 
@@ -364,6 +368,8 @@ public class CommandProcessor {
 			// Nothing
 		} catch(IOException e) {
 			throw new CommandLineException("I/O error");
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
 		}
 	}
 
@@ -377,6 +383,8 @@ public class CommandProcessor {
 			// Nothing
 		} catch(IOException e) {
 			throw new CommandLineException("I/O error");
+		} catch(SecurityException e) {
+			throw new CommandLineException("access denied");
 		}
 	}
 
