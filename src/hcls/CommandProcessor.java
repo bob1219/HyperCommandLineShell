@@ -329,7 +329,15 @@ public class CommandProcessor {
 		}
 	}
 
-	private static void command_chcwd(CurrentWorkingDirectory cwd, File dir) {
+	private static void command_chcwd(CurrentWorkingDirectory cwd, File dir) throws CommandLineException {
+		if(!dir.exists()) {
+			throw new CommandLineException("that does not exist");
+		}
+
+		if(!dir.isDirectory()) {
+			throw new CommandLineException("it is not a directory");
+		}
+
 		cwd.set(dir);
 	}
 
