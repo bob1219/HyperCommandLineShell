@@ -171,31 +171,9 @@ Commands
 
 Setup
 -----
-I described setup scripts in Perl and Python.  
-(I don't have interpreter of Ruby, So I can't describe setup script in Ruby. I'm sorry.)  
-It's "setup.pl" and "setup.py".  
-You can setup:
+You can setup:  
 `perl setup.pl`  
-Or:
-`python setup.py`  
-Setup's steps:  
-1. Input paths. End input all, You can type Ctrl+Z, Then go to next step.
-2. Input Executable Extensions. End input all, You can do same thing of step 1.
-3. finish!
-
-Upgrade
--------
-I described upgrade scripts in Perl and Python.  
-(I don't have interpreter of Ruby, So I can't describe upgrade script in Ruby. I'm sorry.)  
-It's "upgrade.pl" and "upgrade.py".  
-You can upgrade:
-`perl upgrade.pl`  
-Or:
-`python upgrade.py`  
-Setup's steps:  
-1. Input old shell's directory.
-2. Input Executable Extensions. End input all, You can type Ctrl+Z, Then go to next step.
-3. finish!
+Please follow the guide to proceed with setup.
 
 History
 -------
@@ -234,3 +212,7 @@ History
 * 2.2.0 (July 14th, 2018)
 	* Modify unexcepted exception message
 	* Addition Executable-Extensions feature
+
+* 2.3.0 (July 18th, 2018)
+	* Great view of current-working-directory
+	* Modify chcwd command
