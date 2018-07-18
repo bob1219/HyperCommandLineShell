@@ -74,7 +74,13 @@ class Main {
 		System.out.println();
 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-		CurrentWorkingDirectory cwd = new CurrentWorkingDirectory();
+		CurrentWorkingDirectory cwd;
+
+		try {
+			cwd = new CurrentWorkingDirectory();
+		} catch(IOException e) {
+			throw new FatalException("I/O error");
+		}
 
 		while(true) {
 			System.out.print('>');
