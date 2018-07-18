@@ -72,7 +72,7 @@ public class CommandProcessor {
 			case "path":
 				switch(cmdarray[1]) {
 				case "add":
-					command_path_add(new File(cmdarray[2]));
+					command_path_add(cwd.getAbsolutePath(new File(cmdarray[2])));
 					break;
 
 				case "del":
