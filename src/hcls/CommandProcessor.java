@@ -72,7 +72,7 @@ public class CommandProcessor {
 			case "path":
 				switch(cmdarray[1]) {
 				case "add":
-					command_path_add(new File(cmdarray[2]));
+					command_path_add(cwd.getAbsolutePath(new File(cmdarray[2])));
 					break;
 
 				case "del":
@@ -136,6 +136,8 @@ public class CommandProcessor {
 			throw new CommandLineException("few args");
 		} catch(NumberFormatException e) {
 			throw new CommandLineException("invalid path setting number");
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
 		}
 	}
 
@@ -338,7 +340,11 @@ public class CommandProcessor {
 			throw new CommandLineException("it is not a directory");
 		}
 
-		cwd.set(dir);
+		try {
+			cwd.set(dir);
+		} catch(IOException e) {
+			throw new CommandLineException("I/O error");
+		}
 	}
 
 	private static void command_pcwd(CurrentWorkingDirectory cwd) {

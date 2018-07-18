@@ -21,15 +21,15 @@ import java.io.*;
 public class CurrentWorkingDirectory {
 	private File cwd;
 
-	public CurrentWorkingDirectory() { cwd = new File(".").getCanonicalPath(); }
-	public CurrentWorkingDirectory(File dir) { cwd = dir.getCanonicalPath(); }
+	public CurrentWorkingDirectory() throws IOException { cwd = new File(".").getCanonicalFile(); }
+	public CurrentWorkingDirectory(File dir) throws IOException { cwd = dir.getCanonicalFile(); }
 
-	public File getAbsolutePath(File file) {
-		return file.isAbsolute() ? file.getCanonicalPath() : new File(cwd.toString() + '/' + file.toString()).getCanonicalPath();
+	public File getAbsolutePath(File file) throws IOException {
+		return file.isAbsolute() ? file.getCanonicalFile() : new File(cwd.toString() + '/' + file.toString()).getCanonicalFile();
 	}
 
 	public File get() { return cwd; }
-	public void set(File dir) { cwd = dir.getCanonicalPath(); }
+	public void set(File dir) throws IOException { cwd = dir.getCanonicalFile(); }
 
 	@Override
 	public boolean equals(Object obj) {

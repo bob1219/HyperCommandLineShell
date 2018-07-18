@@ -95,7 +95,7 @@ class PathProcessor {
 			read();
 		} catch(FileNotFoundException e) {}
 
-		File canonicalDir = dir.getCanonicalPath();
+		File canonicalDir = dir.getCanonicalFile();
 		if(!paths.contains(canonicalDir)) {
 			paths.add(canonicalDir);
 			write();
@@ -109,7 +109,7 @@ class PathProcessor {
 	}
 
 	public static void clear() throws IOException {
-		paths.clear();
+		paths = new ArrayList<File>();
 		write();
 	}
 
