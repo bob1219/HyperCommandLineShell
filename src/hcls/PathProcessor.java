@@ -25,41 +25,49 @@ class PathProcessor {
 
 	public static File pathProcess(File file, CurrentWorkingDirectory cwd) throws IOException {
 		List<String> executableExtensions = getExecutableExtensions();
-		if(file.isAbsolute()) {
-			if(file.exists()) {
-				return file;
-			}
 
-			for(String executableExtension: executableExtensions) {
-				File file2 = new File(file.toString() + executableExtension);
-				if(file2.exists()) {
-					return file2;
+		// Is target absolute path?
+		if(file.isAbsolute()) {
+			if(file.exists()) { // Does target exist?
+				return file;
+			} else {
+				for(String executableExtension: executableExtensions) {
+					File checkFile = new File(file.toString() + executableExtension);
+					if(checkFile.exists()) {
+						return checkFile;
+					}
 				}
 			}
 		} else {
-			File file3 = new File(cwd.toString() + '/' + file.toString());
-			if(file3.exists()) {
-				return file3;
+			File checkFile = new File(cwd.toString() + '/' + file.toString());
+			if(checkFile.exists()) { // Is target in current working directory?
+				return checkFile;
 			}
 
 			for(String executableExtension: executableExtensions) {
-				File file4 = new File(cwd.toString() + '/' + file.toString() + executableExtension);
-				if(file4.exists()) {
-					return file4;
+				File checkFile2 = new File(checkFile.toString() + executableExtension);
+				if(checkFile2.exists()) {
+					return checkFile2;
 				}
 			}
 
-			read();
+			try {
+				read();
+			} catch(FileNotFoundException e) {
+				return null;
+			}
+
+			// Check path directories
 			for(File path: paths) {
-				File file5 = new File(path.toString() + '/' + file.toString());
-				if(file5.exists()) {
-					return file5;
+				File checkFile1 = new File(path.toString() + '/' + file.toString());
+				if(checkFile1.exists()) {
+					return checkFile1;
 				}
 
 				for(String executableExtension: executableExtensions) {
-					File file6 = new File(path.toString() + '/' + file.toString() + executableExtension);
-					if(file6.exists()) {
-						return file6;
+					File checkFile2 = new File(checkFile1.toString() + executableExtension);
+					if(checkFile2.exists()) {
+						return checkFile2;
 					}
 				}
 			}
@@ -87,8 +95,9 @@ class PathProcessor {
 			read();
 		} catch(FileNotFoundException e) {}
 
-		if(!paths.contains(dir)) {
-			paths.add(dir);
+		File canonicalDir = dir.getCanonicalFile();
+		if(!paths.contains(canonicalDir)) {
+			paths.add(canonicalDir);
 			write();
 		}
 	}
@@ -100,7 +109,7 @@ class PathProcessor {
 	}
 
 	public static void clear() throws IOException {
-		paths.clear();
+		paths = new ArrayList<File>();
 		write();
 	}
 
