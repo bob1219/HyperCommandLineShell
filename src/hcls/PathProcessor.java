@@ -28,25 +28,25 @@ class PathProcessor {
 
 		// Is target absolute path?
 		if(file.isAbsolute()) {
-			if(file.exists()) { // Does target exist?
+			if(file.isFile()) { // Does target exist?
 				return file;
 			} else {
 				for(String executableExtension: executableExtensions) {
 					File checkFile = new File(file.toString() + executableExtension);
-					if(checkFile.exists()) {
+					if(checkFile.isFile()) {
 						return checkFile;
 					}
 				}
 			}
 		} else {
 			File checkFile = new File(cwd.toString() + '/' + file.toString());
-			if(checkFile.exists()) { // Is target in current working directory?
+			if(checkFile.isFile()) { // Is target in current working directory?
 				return checkFile;
 			}
 
 			for(String executableExtension: executableExtensions) {
 				File checkFile2 = new File(checkFile.toString() + executableExtension);
-				if(checkFile2.exists()) {
+				if(checkFile2.isFile()) {
 					return checkFile2;
 				}
 			}
@@ -60,13 +60,13 @@ class PathProcessor {
 			// Check path directories
 			for(File path: paths) {
 				File checkFile1 = new File(path.toString() + '/' + file.toString());
-				if(checkFile1.exists()) {
+				if(checkFile1.isFile()) {
 					return checkFile1;
 				}
 
 				for(String executableExtension: executableExtensions) {
 					File checkFile2 = new File(checkFile1.toString() + executableExtension);
-					if(checkFile2.exists()) {
+					if(checkFile2.isFile()) {
 						return checkFile2;
 					}
 				}

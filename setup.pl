@@ -12,7 +12,7 @@ sub menu {
 
 	my $n = 1;
 	foreach (@selects) {
-		print "$n. $_" . "\n";
+		print "$n. $_\n";
 		++$n;
 	}
 
@@ -39,10 +39,10 @@ sub failed {
 }
 
 sub setup_new {
-	print "Paths:" . "\n";
+	print "Paths:\n";
 	my @paths = <STDIN>;
 
-	print "Executable Extensions:" . "\n";
+	print "Executable Extensions:\n";
 	my @executable_extensions = <STDIN>;
 
 	open(PATHS_FILE, "> data/PATH") or &failed("failed open path file");
@@ -57,8 +57,8 @@ sub setup_new {
 }
 
 sub setup_old {
-	print "Other HyperCommandLineShell's version:" . "\n";
-	my $selects = &menu(("1.0.0 - 2.1.0"), ("2.2.0 - 2.3.0"));
+	print "Other HyperCommandLineShell's version:\n";
+	my $selects = &menu(("1.0.0 - 2.1.0"), ("2.2.0 - 2.3.1"));
 
 	print "Other HyperCommandLineShell's directory: ";
 	my $src_dir = <STDIN>;
@@ -67,7 +67,7 @@ sub setup_old {
 	if($selects == 1) {
 		copy("$src_dir/data/PATH", "./data/PATH") or &failed("failed copy path file");
 
-		print "Executable Extensions:" . "\n";
+		print "Executable Extensions:\n";
 		my @executable_extensions = <STDIN>;
 
 		open(EXECUTABLE_EXTENSIONS_FILE, "> data/EXECUTABLE_EXTENSIONS") or &failed("failed open executable-extensions file");
