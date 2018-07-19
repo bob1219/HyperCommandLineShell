@@ -216,3 +216,6 @@ History
 * 2.3.0 (July 18th, 2018)
 	* Great view of current-working-directory
 	* Modify chcwd command
+
+* 2.3.1 (July 19th, 2018)
+	* Bugfix boot software feature
